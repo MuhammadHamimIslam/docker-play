@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <title>TODO Lost</title>
+</head>
+
+<body>
+  <div class="container mt-5">
+    
+    <h1 class="text-center">Modern Todo List</h1>
+    
+    <form action="/home" method="post" novalidate>
+      {{ form.hidden_tag() }}
+      
+      <div class="form-group mt-2">
+        {{ form.task_name.label(class_="form-label") }}
+        {{ form.task_name(class_="form-control" ~ (" is-invalid" if form.task_name.errors else "")) }}
+        {% for error in form.task_name.errors %}
+        <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      </div>
+      
+      <div class="form-group mt-2">
+        {{ form.task_time.label(class_="form-lab") }}
+        {{ form.task_time(class_="form-control" ~ (" is-invalid" if form.task_time.errors else "")) }}
+        {% for error in form.task_time.errors %}
+        <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      </div>
+      
+      
+      <!--  <div>
+        {% for field, errors in form.errors.items() %}
+        {% for error in errors %}
+        <div class="invalid-feedback">{{ fields.get(field, 'Form') }}: {{ error }}</div>
+        {% endfor %}
+        {% endfor %}
+      </div> -->
+      <button class="btn btn-outline-primary mt-2" type="submit">Add</button>
+    </form>
+    
+    <hr />
+    
+    <table class="table table-bordered table-hover align-middle text-center table-primary">
+      <thead>
+        <tr>
+          <th>Task</th>
+          <th>Time</th>
+          <th>Completed</th>
+          <th>Close</th>
+        </tr>
+      </thead>
+      {% for task in tasks %}
+      <tr class="{{ 'table-success' if task.task_completed else '' }}">
+        <td>{{ task.task_name }}</td>
+        <td>{{ task.task_time.strftime("%I:%M %p") }}</td>
+        {% if task.task_completed %}
+        <td> Completed ✔️ </td>
+        {% else %}
+        <td><input type="checkbox" name="task_completed" class="task_completed" data-id="{{ task.task_id }}"></td>
+        {% endif %}
+        <td><button class="btn btn-close delete-btn" data-id="{{ task.task_id }}"></button></td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% if not tasks %}
+    <p>No Task yet</p>
+    {% endif %}
+  </div>
+  <script src="{{ url_for('static', filename='js/todo.js') }}"></script>
+  
+</body>
+
+</html>
