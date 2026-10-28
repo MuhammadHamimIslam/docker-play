@@ -65,8 +65,8 @@ def complete_task(task_id):
     }
 
 @app.errorhandler(404)
-def error_404():
-    return render_template("404.html")
+def error_404(e):
+    return render_template("404.html"), 404
 
 with app.app_context():
     db.create_all()
