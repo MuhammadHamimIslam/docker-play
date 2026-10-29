@@ -8,7 +8,7 @@ import os
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("APP_SECRET", "my-secret")
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite://"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///todo.db"
 
 CSRFProtect(app)
 db = SQLAlchemy(app)
