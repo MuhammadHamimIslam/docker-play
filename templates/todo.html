@@ -75,30 +75,9 @@
     <p>No Task yet</p>
     {% endif %}
   </main>
-<footer class="border-top py-3 mt-5">
-  <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
-    <p class="mb-0 text-body-secondary">© 2026 Muhammad Hamim Islam</p>
-    <ul class="nav">
-      <li class="nav-item">
-        <a class="nav-link px-2 text-body-secondary" href="https://github.com/MuhammadHamimIslam" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-          <img src=" {{ url_for('static', filename='images/github.svg') }}" alt="">
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link px-2 text-body-secondary" href="mailto:muhammadhamimislam47@gmail.com" aria-label="Email">
-    <img src=" {{ url_for('static', filename='images/envelop.svg') }}" alt="">
-
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link px-2 text-body-secondary" href="https://x.com/@hamim0101" target="_blank" rel="noopener noreferrer" aria-label="X">
-          <img src=" {{ url_for('static', filename='images/x.svg') }}" alt="">
-
-        </a>
-      </li>
-    </ul>
-  </div>
-</footer>
+  <footer>
+       {% include "footer.html" %}
+  </footer>
   <script src="{{ url_for('static', filename='js/todo.js') }}"></script>
   
 </body>
