@@ -4,20 +4,17 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, TimeField
 from wtforms.validators import DataRequired
 from flask_wtf.csrf import CSRFProtect
+from dotenv import load_dotenv
 import os
+
+load_dotenv()
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("APP_SECRET", "my-secret")
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///todo.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URL"]
 
 CSRFProtect(app)
 db = SQLAlchemy(app)
-
-
-fields = {
-    "task_name": "Task Name",
-    "task_time": "Task Time"
-}
 
 class TodoModel(db.Model):
     __tablename__ = "todo"
@@ -70,4 +67,3 @@ def error_404(e):
 
 with app.app_context():
     db.create_all()
-    
