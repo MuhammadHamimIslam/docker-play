@@ -42,7 +42,7 @@ def home():
         return redirect(url_for("home"))
 
     tasks = TodoModel.query.all()
-    return render_template("todo.html", tasks=tasks, form=form, fields=fields)
+    return render_template("todo.html", tasks=tasks, form=form)
     
 @app.route("/delete/<int:task_id>", methods=["DELETE"])
 def delete_task(task_id):
@@ -60,6 +60,26 @@ def complete_task(task_id):
     return {
         "message": "Updated successfully!"
     }
+
+@app.route("/edit/<int:task_id>", methods=["POST"])
+def edit_task(task_id):
+    task = db.get_or_404(TodoModel, task_id)
+    form = TodoForm()
+    
+    if form.validate_on_submit():
+        task.task_name = form.task_name.data
+        task.task_time = form.task_time.data
+        db.session.commit()
+        return {
+            "message": "ediited successfully",
+            "task_name": task.task_name,
+            "task_time": task.task_time.strftime("%I:%M %p"),
+        }, 200
+    else:
+        return {
+            "message": "Invalid form"
+        }, 400
+    
 
 @app.errorhandler(404)
 def error_404(e):
