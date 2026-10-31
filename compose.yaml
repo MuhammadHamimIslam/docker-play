@@ -1,0 +1,17 @@
+services:
+    mysql:
+        image: mysql:8
+        env_file: .env
+        volumes:
+            - my-sql:/var/lib/mysql
+
+    web:
+        build .
+        ports:
+            - "8080:8080"
+        env_file: .env
+        depends_on:
+            - mysql
+
+volumes:
+    my-sql
