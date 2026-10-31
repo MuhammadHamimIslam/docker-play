@@ -1,17 +1,24 @@
 services:
-    mysql:
-        image: mysql:8
-        env_file: .env
-        volumes:
-            - my-sql:/var/lib/mysql
+  mysql:
+    image: mysql:8
+    env_file: .env
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
 
-    web:
-        build .
-        ports:
-            - "8080:8080"
-        env_file: .env
-        depends_on:
-            - mysql
+  web:
+    build: .
+    ports:
+      - "8080:5000"
+    env_file: .env
+    depends_on:
+      mysql:
+        condition: service_healthy
 
 volumes:
-    my-sql
+  mysql-data:
